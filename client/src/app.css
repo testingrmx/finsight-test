@@ -50,6 +50,7 @@ a{color:var(--g);text-decoration:none;}
   .hbg{display:flex!important;}
   .desk-only{display:none!important;}
   .pg{padding:14px 12px 24px;}
+  .pg.pg-advisor{padding:12px 10px 10px;}
 }
 .hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;border-radius:var(--r1);}
 .hbg:hover{background:var(--card2);}

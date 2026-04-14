@@ -39,6 +39,7 @@ export default function Shell() {
   const { dark, toggleDk, logout, user } = useAuth();
   const nav  = useNavigate();
   const loc  = useLocation();
+  const isAdvisor = loc.pathname === '/ai';
   const title = PAGE[loc.pathname] || 'FinSight';
 
   const doLogout = () => { logout(); nav('/login'); };
@@ -100,7 +101,7 @@ export default function Shell() {
             <Avatar size={30} fs={12}/>
           </div>
         </header>
-        <main className="pg"><Outlet/></main>
+        <main className={'pg'+(isAdvisor?' pg-advisor':'')}><Outlet/></main>
       </div>
 
       {drawer && (

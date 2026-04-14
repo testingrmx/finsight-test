@@ -21,6 +21,7 @@ const QUICK = [
  
 const CSS = `
 .adv-wrap{display:flex;height:calc(100vh - var(--hh) - 40px);min-height:520px;border:1px solid var(--brd);border-radius:var(--r3);overflow:hidden;background:var(--card);}
+@supports(height:100dvh){.adv-wrap{height:calc(100dvh - var(--hh) - 40px);}}
  
 /* ── sidebar ── */
 .adv-sb{width:256px;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid var(--brd);background:var(--card2);}
@@ -66,7 +67,7 @@ const CSS = `
 @media(max-width:640px){
   .adv-wrap{
     position:relative;
-    height:calc(100svh - var(--hh) - 56px);
+    height:calc(100dvh - var(--hh) - 28px);
     min-height:0;
     border-radius:var(--r2);
   }
