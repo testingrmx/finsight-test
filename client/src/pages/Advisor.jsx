@@ -67,9 +67,13 @@ const CSS = `
 @media(max-width:640px){
   .adv-wrap{
     position:relative;
-    height:calc(100dvh - var(--hh) - 28px);
+    flex:1;
+    height:auto;
     min-height:0;
-    border-radius:var(--r2);
+    border-radius:0;
+    border-left:none;
+    border-right:none;
+    border-bottom:none;
   }
   .adv-sb{
     display:none;
@@ -207,7 +211,7 @@ export default function Advisor() {
   );
  
   return (
-    <div className="fade" style={{ width: '100%' }}>
+    <div className="fade" style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <style>{CSS}</style>
  
       <div className="adv-wrap">
