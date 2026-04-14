@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { list, portfolio, create, update, remove } from '../controllers/investment.js';
+import { guard } from '../middleware/guard.js';
+const r = Router();
+r.use(guard);
+r.get('/',           list);
+r.get('/portfolio',  portfolio);
+r.post('/',          create);
+r.patch('/:id',      update);
+r.delete('/:id',     remove);
+export default r;

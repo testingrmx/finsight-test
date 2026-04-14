@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { chat, tips, categorise } from '../controllers/ai.js';
+import { guard } from '../middleware/guard.js';
+import rateLimit from 'express-rate-limit';
+const lim = rateLimit({ windowMs: 60*1000, max: 20 });
+const r = Router();
+r.use(guard, lim);
+r.post('/chat', chat);
+r.get('/tips',  tips);
+r.post('/cat',  categorise);
+export default r;

@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { list, create, update, remove } from '../controllers/budget.js';
+import { guard } from '../middleware/guard.js';
+const r = Router();
+r.use(guard);
+r.get('/',       list);
+r.post('/',      create);
+r.patch('/:id',  update);
+r.delete('/:id', remove);
+export default r;

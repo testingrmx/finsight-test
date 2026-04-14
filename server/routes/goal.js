@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { list, create, update, contribute, remove } from '../controllers/goal.js';
+import { guard } from '../middleware/guard.js';
+const r = Router();
+r.use(guard);
+r.get('/',                   list);
+r.post('/',                  create);
+r.patch('/:id',              update);
+r.post('/:id/contribute',    contribute);
+r.delete('/:id',             remove);
+export default r;
