@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   AreaChart, Area, XAxis, YAxis, CartesianGrid,
@@ -63,9 +63,12 @@ export default function Charts() {
   const totalSpent = daily.reduce((s, d) => s + d.amount, 0);
   const activeDays = daily.filter(d => d.amount > 0).length;
 
+  const activeCatRef = useRef(activeCat);
+  useEffect(() => { activeCatRef.current = activeCat; }, [activeCat]);
+
   const handleCatClick = useCallback(async catName => {
     setSelMonth(null);
-    if (activeCat === catName) {
+    if (activeCatRef.current === catName) {
       setActiveCat(null);
       setDaily(dailyAll);
       return;
@@ -79,7 +82,7 @@ export default function Charts() {
       });
       setDaily(dailyAll.map(d => ({ ...d, amount: byDate[d.fullDate] || 0 })));
     } catch {}
-  }, [activeCat, days, dailyAll]);
+  }, [days, dailyAll]);
 
   const handleMonthClick = useCallback(payload => {
     if (!payload?.activeLabel) return;
