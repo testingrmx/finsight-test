@@ -38,6 +38,7 @@ export default function Charts() {
     setBusy(true);
     setActiveCat(null);
     setSelMonth(null);
+    setTappedSlice(null);
     const to = today(), from = dAgo(d - 1);
     try {
       const [c, dl, m] = await Promise.all([A.txCats({ from, to }), A.txDaily({ days: d }), A.txMonthly()]);
@@ -99,6 +100,16 @@ export default function Charts() {
       setDaily(dailyAll);
     }
   }, [mon, dailyAll]);
+
+  const [tappedSlice, setTappedSlice] = useState(null);
+
+  const handlePieClick = useCallback((d) => {
+    const name = d?.name || d?.cat;
+    setTappedSlice(prev => prev === name ? null : name);
+    handleCatClick(d?.cat || d?.name);
+  }, [handleCatClick]);
+
+  const tappedCat = tappedSlice ? cats.find(c => c.cat === tappedSlice) : null;
 
   const dotColor = activeCat ? (catColors[activeCat] || '#f97316') : selMonth ? '#d29922' : '#22c55e';
 
@@ -204,7 +215,7 @@ export default function Charts() {
               <PieChart>
                 <Pie data={cats} dataKey="total" nameKey="cat" cx="50%" cy="50%"
                   outerRadius={88} innerRadius={52} paddingAngle={2}
-                  onClick={d => handleCatClick(d.cat)} style={{ cursor: 'pointer' }}>
+                  onClick={d => handlePieClick(d)} style={{ cursor: 'pointer' }}>
                   {cats.map((c, i) => (
                     <Cell key={c.cat}
                       fill={catColors[c.cat] || CHART_COLORS[i % CHART_COLORS.length]}
@@ -216,6 +227,22 @@ export default function Charts() {
                 <Tooltip content={<PieTooltip/>}/>
               </PieChart>
             </ResponsiveContainer>
+            {tappedCat && (() => {
+              const col = catColors[tappedCat.cat] || '#22c55e';
+              return (
+                <div style={{ marginTop: 6, padding: '8px 12px', borderRadius: 'var(--r2)', background: col + '18', border: `1.5px solid ${col}`, display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: col }}>{tappedCat.cat}</div>
+                    <div style={{ fontSize: 17, fontWeight: 800, color: 'var(--t1)' }}>{fmt(tappedCat.total)}</div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: 15, fontWeight: 800, color: col }}>{total > 0 ? (tappedCat.total / total * 100).toFixed(1) : 0}%</div>
+                    <div style={{ fontSize: 10, color: 'var(--t2)' }}>of expenses</div>
+                  </div>
+                  <button onClick={() => setTappedSlice(null)} style={{ background: 'none', border: 'none', color: col, fontSize: 16, cursor: 'pointer', padding: '0 4px', lineHeight: 1 }}>×</button>
+                </div>
+              );
+            })()}
             {activeCat && (() => {
               const ac = cats.find(c => c.cat === activeCat);
               if (!ac) return null;
